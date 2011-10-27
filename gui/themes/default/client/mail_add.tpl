@@ -150,7 +150,7 @@
 					<td>
 						<select name="als_id">
 							<!-- BDP: als_list -->
-							<option value="{ALS_ID}" {ALS_SELECTED}>@{ALS_NAME}</option>
+							<option value="{ALS_ID}" {ALS_SELECTED}>{ALS_NAME}</option>
 							<!-- EDP: als_list -->
 						</select>
 					</td>
@@ -165,7 +165,7 @@
 					<td>
 						<select name="sub_id">
 							<!-- BDP: sub_list -->
-							<option value="{SUB_ID}" {SUB_SELECTED}>@{SUB_NAME}</option>
+							<option value="{SUB_ID}" {SUB_SELECTED}>{SUB_NAME}</option>
 							<!-- EDP: sub_list -->
 						</select>
 					</td>
@@ -180,7 +180,7 @@
 					<td>
 						<select name="als_sub_id">
 							<!-- BDP: als_sub_list -->
-							<option value="{ALS_SUB_ID}" {ALS_SUB_SELECTED}>@{ALS_SUB_NAME}</option>
+							<option value="{ALS_SUB_ID}" {ALS_SUB_SELECTED}>{ALS_SUB_NAME}</option>
 							<!-- EDP: als_sub_list -->
 						</select>
 					</td>
