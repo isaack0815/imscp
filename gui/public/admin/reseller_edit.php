@@ -688,13 +688,13 @@ function update_reseller()
 			if ($stmt->rowCount() > 0) {
 				while (!$stmt->EOF) {
 					$update = "
-					UPDATE
-						`web_software_inst`
-					SET
-						`software_res_del` = '1'
-					WHERE
-						`software_id` = ?
-				";
+						UPDATE
+							`web_software_inst`
+						SET
+							`software_res_del` = '1'
+						WHERE
+							`software_id` = ?
+					";
 					exec_query($update, array($stmt->fields['software_id']));
 
 					$stmt->MoveNext();
@@ -756,7 +756,7 @@ function update_reseller()
 								$rdata['edit_id']));
 
 
-		// In case where the reseller's greylisting  property is set to 'no'
+		// In case where the reseller's greylisting property is set to 'no'
 		// (reseller has no rights on it), we must also update its customer accounts
 		if ($rdata['mail_perm_greylisting'] == 'no') {
 
