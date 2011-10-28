@@ -618,67 +618,76 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name)
  */
 function update_reseller()
 {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
 	// Get needed data
 	$rdata =& get_data();
 
-	// Updating personal data
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
 
-	$query = "
-		UPDATE
-			`admin`
-		SET
-			`fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?,
-			`country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?,
-			`street2` = ?, `gender` = ?
-		WHERE
-			`admin_id` = ?
-	";
+	try {
+		// Updating personal data
 
-	$qparams = array($rdata['fname'], $rdata['lname'], $rdata['firm'],
-					 $rdata['zip'], $rdata['city'], $rdata['state'],
-					 $rdata['country'], $rdata['email'], $rdata['phone'],
-					 $rdata['fax'], $rdata['street1'], $rdata['street2'],
-					 $rdata['gender'], $rdata['edit_id']);
+		$db->beginTransaction();
 
-	if (!empty($_POST['pass0'])) {
-		$query = str_replace('`fname`', '`admin_pass` = ?, `fname`', $query);
-		array_unshift($qparams, crypt_user_pass($_POST['pass0']));
-	}
-
-	exec_query($query, $qparams);
-
-	// Updating software installer proeperties
-
-	if ($rdata['software_allowed'] == 'no') {
-		$query_user = "
- 			UPDATE
- 				`domain`
- 			SET
- 				`domain_software_allowed` = ?
- 			WHERE
- 				`domain_created_id` = ?
- 		";
-		exec_query($query_user, array(
-									 $rdata['softwaredepot_allowed'],
-									 $rdata['edit_id']));
-	}
-
-	if ($rdata['websoftwaredepot_allowed'] == 'no') {
 		$query = "
- 			SELECT
- 				`software_id`
-			FROM
-				`web_software`
+			UPDATE
+				`admin`
+			SET
+				`fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?,
+				`country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?,
+				`street2` = ?, `gender` = ?
 			WHERE
-				`software_depot` = 'yes'
-			AND
-				`reseller_id` = ?
- 		";
-		$stmt = exec_query($query, array($rdata['edit_id']));
+				`admin_id` = ?
+		";
 
-		if ($stmt->rowCount() > 0) {
-			while (!$stmt->EOF) {
-				$update = "
+		$qparams = array($rdata['fname'], $rdata['lname'], $rdata['firm'],
+						 $rdata['zip'], $rdata['city'], $rdata['state'],
+						 $rdata['country'], $rdata['email'], $rdata['phone'],
+						 $rdata['fax'], $rdata['street1'], $rdata['street2'],
+						 $rdata['gender'], $rdata['edit_id']);
+
+		if (!empty($_POST['pass0'])) {
+			$query = str_replace('`fname`', '`admin_pass` = ?, `fname`', $query);
+			array_unshift($qparams, crypt_user_pass($_POST['pass0']));
+		}
+
+		exec_query($query, $qparams);
+
+		// Updating software installer proeperties
+
+		if ($rdata['software_allowed'] == 'no') {
+			$query_user = "
+ 				UPDATE
+ 					`domain`
+ 				SET
+ 					`domain_software_allowed` = ?
+ 				WHERE
+ 					`domain_created_id` = ?
+ 			";
+			exec_query($query_user, array(
+										 $rdata['softwaredepot_allowed'],
+										 $rdata['edit_id']));
+		}
+
+		if ($rdata['websoftwaredepot_allowed'] == 'no') {
+			$query = "
+ 				SELECT
+ 					`software_id`
+				FROM
+					`web_software`
+				WHERE
+					`software_depot` = 'yes'
+				AND
+				`reseller_id` = ?
+ 			";
+			$stmt = exec_query($query, array($rdata['edit_id']));
+
+			if ($stmt->rowCount() > 0) {
+				while (!$stmt->EOF) {
+					$update = "
 					UPDATE
 						`web_software_inst`
 					SET
@@ -686,65 +695,111 @@ function update_reseller()
 					WHERE
 						`software_id` = ?
 				";
-				exec_query($update, array($stmt->fields['software_id']));
+					exec_query($update, array($stmt->fields['software_id']));
 
-				$stmt->MoveNext();
+					$stmt->MoveNext();
+				}
+
+				$delete_rights = "
+					DELETE FROM
+						`web_software`
+					WHERE
+						`software_depot` = 'yes'
+					AND
+						`reseller_id` = ?
+				";
+				exec_query($delete_rights, array($rdata['edit_id']));
 			}
-
-			$delete_rights = "
-				DELETE FROM
-					`web_software`
-				WHERE
-					`software_depot` = 'yes'
-				AND
-					`reseller_id` = ?
-			";
-			exec_query($delete_rights, array($rdata['edit_id']));
 		}
+
+		/** Updating reseller's properties */
+
+		$query = "
+			UPDATE
+				`reseller_props`
+			SET
+				`reseller_ips` = ?, `max_dmn_cnt` = ?, `max_sub_cnt` = ?,
+				`max_als_cnt` = ?, `max_mail_cnt` = ?, `max_ftp_cnt` = ?,
+				`max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?, `max_traff_amnt` = ?,
+				`max_disk_amnt` = ?, `support_system` = ?, `customer_id` = ?,
+				`software_allowed` = ?, `softwaredepot_allowed` = ?,
+				`websoftwaredepot_allowed` = ?, `php_ini_system` = ?,
+				`php_ini_al_disable_functions` = ?, `php_ini_al_allow_url_fopen` = ?,
+				`php_ini_al_register_globals` = ?, `php_ini_al_display_errors` = ?,
+				`php_ini_max_post_max_size` = ?, `php_ini_max_upload_max_filesize` = ?,
+				`php_ini_max_max_execution_time` = ?, `php_ini_max_max_input_time` = ?,
+				`php_ini_max_memory_limit` = ?, `mail_perm_greylisting` = ?
+			WHERE
+				`reseller_id` = ?
+		";
+		exec_query($query, array(
+								$rdata['reseller_ips'], $rdata['max_dmn_cnt'],
+								$rdata['max_sub_cnt'], $rdata['max_als_cnt'],
+								$rdata['max_mail_cnt'], $rdata['max_ftp_cnt'],
+								$rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
+								$rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
+								$rdata['support_system'], $rdata['customer_id'],
+								$rdata['software_allowed'],
+								$rdata['softwaredepot_allowed'],
+								$rdata['websoftwaredepot_allowed'],
+								$rdata['php_ini_system'],
+								$rdata['php_ini_al_disable_functions'],
+								$rdata['php_ini_al_allow_url_fopen'],
+								$rdata['php_ini_al_register_globals'],
+								$rdata['php_ini_al_display_errors'],
+								$rdata['php_ini_max_post_max_size'],
+								$rdata['php_ini_max_upload_max_filesize'],
+								$rdata['php_ini_max_max_execution_time'],
+								$rdata['php_ini_max_max_input_time'],
+								$rdata['php_ini_max_memory_limit'],
+								$rdata['mail_perm_greylisting'],
+								$rdata['edit_id']));
+
+
+		// In case where the reseller's greylisting  property is set to 'no'
+		// (reseller has no rights on it), we must also update its customer accounts
+		if ($rdata['mail_perm_greylisting'] == 'no') {
+
+			// Updates the customer's greylisting permission if needed
+			$query = "
+				UPDATE
+					`domain`
+				SET
+					`mail_perm_greylisting` = ?
+				WHERE
+					`mail_perm_greylisting` = ?
+				AND
+					`domain_created_id` = ?
+			";
+			$stmt = exec_query($query, array('no', 'yes', $rdata['edit_id']));
+
+			// Updates the customer's mail accounts if needed
+			if($stmt->rowCount() != 0) {
+				$query = "
+					UPDATE
+	 					`mail_users`
+	 				SET
+	 					`status` = ?, `greylisting` = ?
+	 				WHERE
+	 					`domain_id` IN (SELECT `domain_id` FROM `domain` WHERE `domain_created_id` = ?)
+	 				AND
+	 					`greylisting` = ?
+	 			";
+				$stmt = exec_query($query, array(
+												$cfg->ITEM_CHANGE_STATUS, 'yes',
+												$rdata['edit_id'], 'no'));
+
+				$db->commit();
+
+				if ($stmt->rowCount() != 0) {
+					send_request();
+				}
+			}
+		}
+	} catch (PDOException $e) {
+		$db->rollBack();
+		throw new iMSCP_Exception($e->getMessage());
 	}
-
-	/** Updating reseller's properties */
-
-	$query = "
-		UPDATE
-			`reseller_props`
-		SET
-			`reseller_ips` = ?, `max_dmn_cnt` = ?, `max_sub_cnt` = ?, `max_als_cnt` = ?,
-			`max_mail_cnt` = ?, `max_ftp_cnt` = ?, `max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?,
-			`max_traff_amnt` = ?, `max_disk_amnt` = ?, `support_system` = ?, `customer_id` = ?,
-			`software_allowed` = ?, `softwaredepot_allowed` = ?, `websoftwaredepot_allowed` = ?,
-			`php_ini_system` = ?, `php_ini_al_disable_functions` = ?,
-			`php_ini_al_allow_url_fopen` = ?, `php_ini_al_register_globals` = ?,
-			`php_ini_al_display_errors` = ?, `php_ini_max_post_max_size` = ?,
-			`php_ini_max_upload_max_filesize` = ?, `php_ini_max_max_execution_time` = ?,
-			`php_ini_max_max_input_time` = ?, `php_ini_max_memory_limit` = ?, `mail_perm_greylisting` = ?
-		WHERE
-			`reseller_id` = ?
-	";
-
-	exec_query($query, array(
-							$rdata['reseller_ips'], $rdata['max_dmn_cnt'],
-							$rdata['max_sub_cnt'], $rdata['max_als_cnt'],
-							$rdata['max_mail_cnt'], $rdata['max_ftp_cnt'],
-							$rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
-							$rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
-							$rdata['support_system'], $rdata['customer_id'],
-							$rdata['software_allowed'],
-							$rdata['softwaredepot_allowed'],
-							$rdata['websoftwaredepot_allowed'],
-							$rdata['php_ini_system'],
-							$rdata['php_ini_al_disable_functions'],
-							$rdata['php_ini_al_allow_url_fopen'],
-							$rdata['php_ini_al_register_globals'],
-							$rdata['php_ini_al_display_errors'],
-							$rdata['php_ini_max_post_max_size'],
-							$rdata['php_ini_max_upload_max_filesize'],
-							$rdata['php_ini_max_max_execution_time'],
-							$rdata['php_ini_max_max_input_time'],
-							$rdata['php_ini_max_memory_limit'],
-						    $rdata['mail_perm_greylisting'],
-							$rdata['edit_id']));
-
 }
 
 /**
