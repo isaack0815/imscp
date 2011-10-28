@@ -23,6 +23,8 @@
 		<script language="JavaScript" type="text/JavaScript">
 			/*<![CDATA[*/
 			$(document).ready(function() {
+				$('#greylisting_help').iMSCPtooltips({msg:"{TR_GREYLISTING_HELP}"});
+
 				if($('#phpini_system_no').is(':checked')) {
 					$("#phpinidetail").hide();
 				}
@@ -302,6 +304,15 @@
 								</td>
 							</tr>
 						</tbody>
+						<tr>
+							<td>{TR_GREYLISTING_SUPPORT}<span style="vertical-align: middle;" class="icon i_help" id="greylisting_help">{TR_HELP}</span></td>
+							<td>
+								<input type="radio" name="greylisting" id="greylistingYes" value="yes"{GREYLISTING_CHECKED_YES} />
+								<label for="greylistingYes">{TR_YES}</label>
+								<input type="radio" name="greylisting" id="greylistingNo" value="no"{GREYLISTING_CHECKED_NO} />
+								<label for="greylistingNo">{TR_NO}</label>
+							</td>
+						</tr>
 					</table>
 				</fieldset>
 

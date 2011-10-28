@@ -192,6 +192,7 @@ function reseller_addReseller($tpl, $phpini)
 				$nreseller_software_allowed = clean_input($_POST['nreseller_software_allowed']);
 				$nreseller_softwaredepot_allowed = clean_input($_POST['nreseller_softwaredepot_allowed']);
 				$nreseller_websoftwaredepot_allowed = clean_input($_POST['nreseller_websoftwaredepot_allowed']);
+				$greylisting = (isset($_POST['greylisting']) && $_POST['greylisting'] == 'yes') ? 'yes' : 'no';
 
 				$customer_id = clean_input($_POST['customer_id']);
 				$support_system = clean_input($_POST['support_system']);
@@ -208,26 +209,27 @@ function reseller_addReseller($tpl, $phpini)
 					    `php_ini_system`, `php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
 					    `php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
 					    `php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
-					    `php_ini_max_max_input_time`, `php_ini_max_memory_limit`	
+					    `php_ini_max_max_input_time`, `php_ini_max_memory_limit`, `mail_perm_greylisting`
 				    ) VALUES (
 					    ?, ?, ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0',
-					    ?, '0', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+					    ?, '0', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				    )
 			    ";
 
-				exec_query($query,
-						   array($new_admin_id, $reseller_ips, $nreseller_max_domain_cnt,
-								$nreseller_max_subdomain_cnt, $nreseller_max_alias_cnt,
-								$nreseller_max_mail_cnt, $nreseller_max_ftp_cnt,
-								$nreseller_max_sql_db_cnt, $nreseller_max_sql_user_cnt,
-								$nreseller_max_traffic, $nreseller_max_disk,
-								$support_system, $customer_id, $nreseller_software_allowed,
-								$nreseller_softwaredepot_allowed,
-								$nreseller_websoftwaredepot_allowed,
-								$phpini->getRePermVal('phpiniSystem'), $phpini->getRePermVal('phpiniDisableFunctions'), $phpini->getRePermVal('phpiniAllowUrlFopen'),
-								$phpini->getRePermVal('phpiniRegisterGlobals'), $phpini->getRePermVal('phpiniDisplayErrors'), $phpini->getRePermVal('phpiniPostMaxSize'),
-								$phpini->getRePermVal('phpiniUploadMaxFileSize'), $phpini->getRePermVal('phpiniMaxExecutionTime'),
-								$phpini->getRePermVal('phpiniMaxInputTime'), $phpini->getRePermVal('phpiniMemoryLimit')
+				exec_query($query, array(
+										$new_admin_id, $reseller_ips, $nreseller_max_domain_cnt,
+										$nreseller_max_subdomain_cnt, $nreseller_max_alias_cnt,
+										$nreseller_max_mail_cnt, $nreseller_max_ftp_cnt,
+										$nreseller_max_sql_db_cnt, $nreseller_max_sql_user_cnt,
+										$nreseller_max_traffic, $nreseller_max_disk,
+										$support_system, $customer_id, $nreseller_software_allowed,
+										$nreseller_softwaredepot_allowed,
+										$nreseller_websoftwaredepot_allowed,
+										$phpini->getRePermVal('phpiniSystem'), $phpini->getRePermVal('phpiniDisableFunctions'), $phpini->getRePermVal('phpiniAllowUrlFopen'),
+										$phpini->getRePermVal('phpiniRegisterGlobals'), $phpini->getRePermVal('phpiniDisplayErrors'), $phpini->getRePermVal('phpiniPostMaxSize'),
+										$phpini->getRePermVal('phpiniUploadMaxFileSize'), $phpini->getRePermVal('phpiniMaxExecutionTime'),
+										$phpini->getRePermVal('phpiniMaxInputTime'), $phpini->getRePermVal('phpiniMemoryLimit'),
+									 	$greylisting
 						   ));
 
 				$db->commit();
@@ -249,6 +251,7 @@ function reseller_addReseller($tpl, $phpini)
 		} else {
 			$htmlChecked = $cfg->HTML_CHECKED;
 			$htmlSelected = $cfg->HTML_SELECTED;
+
 			$tpl->assign(array(
 							  'EMAIL' => clean_input($_POST['email'], true),
 							  'USERNAME' => clean_input($_POST['username'], true),
@@ -302,7 +305,9 @@ function reseller_addReseller($tpl, $phpini)
 							  'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => clean_input($_POST['phpini_max_upload_max_filesize'], true),
 							  'PHPINI_MAX_POST_MAX_SIZE_VAL' => clean_input($_POST['phpini_max_post_max_size'], true),
 							  'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => clean_input($_POST['phpini_max_max_execution_time'], true),
-							  'PHPINI_MAX_MAX_INPUT_TIME_VAL' => clean_input($_POST['phpini_max_max_input_time'], true)
+							  'PHPINI_MAX_MAX_INPUT_TIME_VAL' => clean_input($_POST['phpini_max_max_input_time'], true),
+							  'GREYLISTING_CHECKED_YES' => (isset($_POST['greylisting']) && $_POST['greylisting'] == 'yes') ? $htmlChecked : '',
+							  'GREYLISTING_CHECKED_NO' => (isset($_POST['greylisting']) && $_POST['greylisting'] == 'yes') ? '' : $htmlChecked
 						 ));
 
 
@@ -358,7 +363,9 @@ function reseller_addReseller($tpl, $phpini)
 						  'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $phpini->getRePermVal('phpiniUploadMaxFileSize'),
 						  'PHPINI_MAX_POST_MAX_SIZE_VAL' => $phpini->getRePermVal('phpiniPostMaxSize'),
 						  'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $phpini->getRePermVal('phpiniMaxExecutionTime'),
-						  'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $phpini->getRePermVal('phpiniMaxInputTime')
+						  'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $phpini->getRePermVal('phpiniMaxInputTime'),
+						  'GREYLISTING_CHECKED_YES' => '',
+						  'GREYLISTING_CHECKED_NO' => $htmlChecked
 					 ));
 	}
 }
@@ -635,7 +642,9 @@ $tpl->assign(array(
 				  'TR_FAX' => tr('Fax'),
 				  'TR_PHONE' => tr('Phone'),
 				  'TR_ADD' => tr('Add'),
-				  'GENPAS' => passgen()));
+				  'GENPAS' => passgen(),
+				  'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
+				  'TR_GREYLISTING_HELP' => tr('Allows the reseller to let its customers choose if they want activate the greylisting feature for their mail accounts.')));
 
 generatePageMessage($tpl);
 

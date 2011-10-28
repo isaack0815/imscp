@@ -93,7 +93,8 @@ function reseller_getCleanData()
 			'php_ini_max_upload_max_filesize' => clean_input($_POST['phpini_max_upload_max_filesize']),
 			'php_ini_max_post_max_size' => clean_input($_POST['phpini_max_post_max_size']),
 			'php_ini_max_max_execution_time' => clean_input($_POST['phpini_max_max_execution_time']),
-			'php_ini_max_max_input_time' => clean_input($_POST['phpini_max_max_input_time'])
+			'php_ini_max_max_input_time' => clean_input($_POST['phpini_max_max_input_time']),
+			'mail_perm_greylisting' => clean_input($_POST['greylisting'])
 		);
 	}
 
@@ -451,7 +452,7 @@ function get_reseller_prop($reseller_id)
 			`php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
 			`php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
 			`php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
-			`php_ini_max_max_input_time`, `php_ini_max_memory_limit`
+			`php_ini_max_max_input_time`, `php_ini_max_memory_limit`, `mail_perm_greylisting`
 		FROM
 			`admin` AS a, `reseller_props` AS r
 		WHERE
@@ -716,7 +717,7 @@ function update_reseller()
 			`php_ini_al_allow_url_fopen` = ?, `php_ini_al_register_globals` = ?,
 			`php_ini_al_display_errors` = ?, `php_ini_max_post_max_size` = ?,
 			`php_ini_max_upload_max_filesize` = ?, `php_ini_max_max_execution_time` = ?,
-			`php_ini_max_max_input_time` = ?, `php_ini_max_memory_limit` = ?
+			`php_ini_max_max_input_time` = ?, `php_ini_max_memory_limit` = ?, `mail_perm_greylisting` = ?
 		WHERE
 			`reseller_id` = ?
 	";
@@ -741,6 +742,7 @@ function update_reseller()
 							$rdata['php_ini_max_max_execution_time'],
 							$rdata['php_ini_max_max_input_time'],
 							$rdata['php_ini_max_memory_limit'],
+						    $rdata['mail_perm_greylisting'],
 							$rdata['edit_id']));
 
 }
@@ -1038,6 +1040,13 @@ $tpl->assign(
 		 'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($rdata['php_ini_al_disable_functions'] != 'yes')
 			 ? $cfg->HTML_CHECKED : '',
 		 'TR_PHPINI_SYSTEM' => tr('Feature PHP.ini'),
+
+
+		 'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
+		 'TR_GREYLISTING_HELP' => tr('Allows the reseller to let its customers choose if they want activate the greylisting feature for their mail accounts.'),
+		 'GREYLISTING_CHECKED_YES' => ($rdata['mail_perm_greylisting'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		 'GREYLISTING_CHECKED_NO' => ($rdata['mail_perm_greylisting'] != 'yes') ? $cfg->HTML_CHECKED : '',
+
 		 'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('allow change Value register_globals'),
 		 'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('allow change Value allow_url_fopen'),
 		 'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('MAX allowed in memory_limit [MB]'),
