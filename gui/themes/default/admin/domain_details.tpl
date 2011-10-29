@@ -8,12 +8,23 @@
         <title>{TR_DETAILS_DOMAIN_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
         <script type="text/javascript">
             DD_belatedPNG.fix('*');
         </script>
         <![endif]-->
+
+		<script type="text/javascript">
+			/*<![CDATA[*/
+				$(document).ready(function() {
+					$('#greylisting_help').iMSCPtooltips({msg:"{TR_GREYLISTING_HELP}"});
+				});
+			/*]]>*/
+		</script>
     </head>
     <body>
         <div class="header">
@@ -74,6 +85,10 @@
                     <td>{TR_MYSQL_SUPP}</td>
                     <td>{VL_MYSQL_SUPP}</td>
                 </tr>
+				<tr>
+					<td>{TR_GREYLISTING_SUPPORT}<span style="vertical-align: middle;" class="icon i_help" id="greylisting_help">{TR_HELP}</span></td>
+					<td>{VL_GREYLISTING_SUPPORT}</td>
+				</tr>
                 <tr>
                     <td>{TR_TRAFFIC}</td>
                     <td>

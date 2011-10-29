@@ -84,7 +84,9 @@ $tpl->assign(
 		'TR_DOMALIAS_ACCOUNTS'		=> tr('Domain aliases'),
 		'TR_UPDATE_DATA'		=> tr('Submit changes'),
 		'TR_BACK'			=> tr('Back'),
-		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer')
+		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer'),
+		'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
+		'TR_GREYLISTING_HELP' => tr('Tells whether or not the domain owner can choose to activate or not the greylisting filtering on its mail accounts.'),
 	)
 );
 
@@ -294,6 +296,11 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
         $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('No')));
     }
 
+
+
+	//VL_GREYLISTING_SUPPORT
+
+
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
 	// Fill in the fields
 	$tpl->assign(
@@ -306,6 +313,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 			'VL_CGI_SUPP'			=> ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
 			'VL_DNS_SUPP'			=> ($data['domain_dns'] == 'yes') ? tr('Enabled') : tr('Disabled'),
 			'VL_MYSQL_SUPP'			=> ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
+			'VL_GREYLISTING_SUPPORT' => ($data['mail_perm_greylisting'] == 'yes') ? tr('Yes') : tr('No'),
 			'VL_SOFTWARE_SUPP'		=> ($data['domain_software_allowed'] == 'yes') ? tr('Enabled') : tr('Disabled'),
 			'VL_TRAFFIC_PERCENT'		=> $traffic_percent > 100 ? 100 : $traffic_percent,
 			'VL_TRAFFIC_USED'		=> sizeit($domain_all_traffic),

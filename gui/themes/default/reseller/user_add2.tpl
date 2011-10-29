@@ -252,7 +252,7 @@
 						<!-- BDP: greylisting_feature -->
 						<tr>
 							<td>
-								{TR_GREYLISTING_SUPPORT} <span style="vertical-align: middle;" class="icon i_help" id="greylisting_help">{TR_HELP}</span>
+								{TR_GREYLISTING_SUPPORT}<span style="vertical-align: middle;" class="icon i_help" id="greylisting_help">{TR_HELP}</span>
 							</td>
 							<td>
 								<input type="radio" name="greylisting" id="greylisting1" value="yes"{GREYLISTING_CHECKED_YES} />

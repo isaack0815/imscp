@@ -1101,7 +1101,7 @@ $tpl->assign(
 
 
 		 'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
-		 'TR_GREYLISTING_HELP' => tr('Allows the reseller to let its customers choose if they want activate the greylisting feature for their mail accounts.'),
+		 'TR_GREYLISTING_HELP' => tr('Allows the reseller to let its customers choose if they want activate the greylisting filtering for their mail accounts.'),
 		 'GREYLISTING_CHECKED_YES' => ($rdata['mail_perm_greylisting'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		 'GREYLISTING_CHECKED_NO' => ($rdata['mail_perm_greylisting'] != 'yes') ? $cfg->HTML_CHECKED : '',
 
