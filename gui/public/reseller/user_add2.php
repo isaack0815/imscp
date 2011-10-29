@@ -489,7 +489,7 @@ $tpl->assign(array(
 				  'TR_PHPINI_MAX_INPUT_TIME' => tr('Set max_input_time [sec]'),
 				  'TR_PHPINI_MEMORY_LIMIT' => tr('Set memory_limit [MB]'),
 				  'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
-				  'TR_GREYLISTING_HELP' => tr('Let the customer choose if he want activate the greylisting feature for its mail accounts.'),
+				  'TR_GREYLISTING_HELP' => tr('Let the customer choose if he want deactivate the greylisting filtering for its mail accounts.'),
 			 ));
 
 

@@ -86,7 +86,7 @@ $tpl->assign(
 		'TR_BACK'			=> tr('Back'),
 		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer'),
 		'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
-		'TR_GREYLISTING_HELP' => tr('Tells whether or not the domain owner can choose to activate or not the greylisting filtering on its mail accounts.'),
+		'TR_GREYLISTING_HELP' => tr('Tells whether or not the customer can choose to deactivate the greylisting filtering on its mail accounts.'),
 	)
 );
 
@@ -296,12 +296,8 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
         $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('No')));
     }
 
-
-
-	//VL_GREYLISTING_SUPPORT
-
-
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
+
 	// Fill in the fields
 	$tpl->assign(
 		array(

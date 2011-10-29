@@ -644,7 +644,7 @@ $tpl->assign(array(
 				  'TR_ADD' => tr('Add'),
 				  'GENPAS' => passgen(),
 				  'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
-				  'TR_GREYLISTING_HELP' => tr('Allows the reseller to let its customers choose if they want activate the greylisting feature for their mail accounts.')));
+				  'TR_GREYLISTING_HELP' => tr('Allows the reseller to let its customers choose if they want deactivate the greylisting filtering for their mail accounts.')));
 
 generatePageMessage($tpl);
 
