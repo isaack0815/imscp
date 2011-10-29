@@ -31,6 +31,10 @@
 	                       $('#phpini_system_no').click( function() {
         	                        $("#phpinidetail").hide();
                 	        });
+
+						<!-- BDP: greylisting_feature_js -->
+						$('#greylisting_help').iMSCPtooltips({msg:"{TR_GREYLISTING_HELP}"});
+						<!-- EDP: greylisting_feature_js -->
 	                });
         	//-->
         	</script>
@@ -245,6 +249,19 @@
 
                                                </tbody>
                                                 <!-- EDP: t_phpini_system -->
+						<!-- BDP: greylisting_feature -->
+						<tr>
+							<td>
+								{TR_GREYLISTING_SUPPORT} <span style="vertical-align: middle;" class="icon i_help" id="greylisting_help">{TR_HELP}</span>
+							</td>
+							<td>
+								<input type="radio" name="greylisting" id="greylisting1" value="yes"{GREYLISTING_CHECKED_YES} />
+								<label for="greylisting1">{TR_YES}</label>
+								<input type="radio" name="greylisting" id="greylisting2" value="no"{GREYLISTING_CHECKED_NO} />
+								<label for="greylisting2">{TR_NO}</label>
+							</td>
+						</tr>
+						<!-- EDP: greylisting_feature -->
 					</table>
 				</fieldset>
 

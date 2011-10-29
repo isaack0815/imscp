@@ -72,7 +72,7 @@ function get_reseller_default_props($reseller_id)
                  $stmt->fields['current_sql_user_cnt'], $stmt->fields['max_sql_user_cnt'],
                  $stmt->fields['current_traff_amnt'], $stmt->fields['max_traff_amnt'],
                  $stmt->fields['current_disk_amnt'], $stmt->fields['max_disk_amnt'],
-                 $stmt->fields['software_allowed']);
+                 $stmt->fields['software_allowed'], $stmt->fields['mail_perm_greylisting']);
 }
 
 /**
@@ -1063,11 +1063,11 @@ function get_reseller_id($domain_id)
 function check_reseller_permissions($reseller_id, $permission)
 {
     list(, , , $rsub_max, , $rals_max, , $rmail_max, , $rftp_max, , $rsql_db_max, ,
-        $rsql_user_max) = get_reseller_default_props($reseller_id);
+        $rsql_user_max, , , , , ,$mailPermGreyListing) = get_reseller_default_props($reseller_id);
 
     if ($permission == 'all_permissions') {
         return array($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max,
-                     $rsql_user_max);
+                     $rsql_user_max, $mailPermGreyListing);
     } elseif ($permission == 'subdomain' && $rsub_max == '-1') {
         return false;
     } elseif ($permission == 'alias' && $rals_max == '-1') {
@@ -1080,7 +1080,9 @@ function check_reseller_permissions($reseller_id, $permission)
         return false;
     } elseif ($permission == 'sql_user' && $rsql_user_max == '-1') {
         return false;
-    }
+    } elseif($permission == 'mail_perm_greylisting' && $mailPermGreyListing == 'no') {
+		return false;
+	}
 
     return true;
 }

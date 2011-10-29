@@ -68,7 +68,7 @@ function get_init_au2_page($tpl, $phpini)
 {
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp,
 		$hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns,
-		$hp_allowsoftware;
+		$hp_allowsoftware, $greylisting;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -139,7 +139,10 @@ function get_init_au2_page($tpl, $phpini)
 						  : $phpini->getDataDefaultVal('phpiniMaxInputTime'),
 					  'PHPINI_MEMORY_LIMIT' => ($phpini->getDataVal('phpiniMemoryLimit') != 'no')
 						  ? $phpini->getDataVal('phpiniMemoryLimit')
-						  : $phpini->getDataDefaultVal('phpiniMemoryLimit')
+						  : $phpini->getDataDefaultVal('phpiniMemoryLimit'),
+
+					 'GREYLISTING_CHECKED_YES' => ($greylisting == 'yes') ? $cfg->HTML_CHECKED : '',
+					 'GREYLISTING_CHECKED_NO' => ($greylisting != 'yes') ? $cfg->HTML_CHECKED : ''
 				 ));
 }
 
@@ -155,7 +158,7 @@ function get_hp_data($hpid, $resellerId, $phpini)
 {
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp,
 		$hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns,
-		$hp_allowsoftware;
+		$hp_allowsoftware, $greylisting;
 
 	$stmt = exec_query(
 		"SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?",
@@ -194,6 +197,9 @@ function get_hp_data($hpid, $resellerId, $phpini)
 		$hp_sub = $hp_als = $hp_mail = $hp_ftp = $hp_sql_db = $hp_sql_user =
 		$hp_traff = $hp_disk = '';
 	}
+
+		// Todo add this properties to hosting plans
+		$greylisting = 'no';
 }
 
 /**
@@ -205,7 +211,7 @@ function check_user_data($phpini)
 {
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp,
 		$hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dmn, $hp_backup, $hp_dns,
-		$hp_allowsoftware;
+		$hp_allowsoftware, $greylisting;
 
 	if (isset($_POST['template'])) {
 		$hp_name = $_POST['template'];
@@ -311,6 +317,7 @@ function check_user_data($phpini)
 		}
 	}
 
+	$greylisting = (isset($_POST['greylisting']) && $_POST['greylisting'] == 'yes') ? 'yes' : 'no';
 
 	list(
 		$rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max
@@ -428,7 +435,9 @@ $tpl->define_dynamic(array(
 						  't_phpini_register_globals' => 'page',
 						  't_phpini_allow_url_fopen' => 'page',
 						  't_phpini_display_errors' => 'page',
-						  't_phpini_disable_functions' => 'page'));
+						  't_phpini_disable_functions' => 'page',
+						  'greylisting_feature_js', 'page',
+						  'greylisting_feature', 'page'));
 
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
@@ -478,7 +487,9 @@ $tpl->assign(array(
 				  'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Set upload_max_filesize [MB]'),
 				  'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Set max_execution_time [sec]'),
 				  'TR_PHPINI_MAX_INPUT_TIME' => tr('Set max_input_time [sec]'),
-				  'TR_PHPINI_MEMORY_LIMIT' => tr('Set memory_limit [MB]')
+				  'TR_PHPINI_MEMORY_LIMIT' => tr('Set memory_limit [MB]'),
+				  'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
+				  'TR_GREYLISTING_HELP' => tr('Let the customer choose if he want activate the greylisting feature for its mail accounts.'),
 			 ));
 
 
@@ -523,8 +534,9 @@ get_init_au2_page($tpl, $phpini);
 get_reseller_software_permission($tpl, $_SESSION['user_id']);
 
 list(
-	$rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max
-	) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+	$rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max,
+	$mailPermGreylisting
+) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
 
 if ($rsub_max == '-1') {
 	$tpl->assign('ALIAS_ADD', '');
@@ -552,6 +564,13 @@ if ($rsql_user_max == '-1') {
 
 if (!$phpini->checkRePerm('phpiniSystem')) {
 	$tpl->assign('T_PHPINI_SYSTEM', '');
+}
+
+if ($mailPermGreylisting == 'no') {
+	$tpl->assign(
+		array(
+			'GREYLISTING_FEATURE_JS' => '',
+			'GREYLISTING_FEATURE' => ''));
 }
 
 generatePageMessage($tpl);
