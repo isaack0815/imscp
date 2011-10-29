@@ -793,7 +793,7 @@ function update_reseller()
 
 				if (($totalScheduledForUpdate = $stmt->rowCount()) != 0) {
 					send_request();
-					set_page_message(tr("%d email accounts for reseller's customers were scheduled for update to re-activate the greylisting filtering", $totalScheduledForUpdate), 'info');
+					set_page_message(tr("%d email accounts for reseller's customers were scheduled for update to re-activate the greylisting filtering.", $totalScheduledForUpdate), 'info');
 				}
 			}
 		}
