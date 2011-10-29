@@ -16,6 +16,7 @@ Other:
 
 Tickets:
 	- Fixed #242: Directories are created with group write permissions.
+	- Fixed #245: Cron for rkhunter typo (tx Cool)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
