@@ -761,6 +761,7 @@ function update_reseller()
 		if ($rdata['mail_perm_greylisting'] == 'no') {
 
 			// Updates the customer's greylisting permission if needed
+			// (set mail_perm_greylisting to 'no')
 			$query = "
 				UPDATE
 					`domain`
@@ -774,6 +775,7 @@ function update_reseller()
 			$stmt = exec_query($query, array('no', 'yes', $rdata['edit_id']));
 
 			// Updates the customer's mail accounts if needed
+			// (set greylisting to 'yes')
 			if($stmt->rowCount() != 0) {
 				$query = "
 					UPDATE
@@ -789,13 +791,14 @@ function update_reseller()
 												$cfg->ITEM_CHANGE_STATUS, 'yes',
 												$rdata['edit_id'], 'no'));
 
-				$db->commit();
-
-				if ($stmt->rowCount() != 0) {
+				if (($totalScheduledForUpdate = $stmt->rowCount()) != 0) {
 					send_request();
+					set_page_message(tr("%d email accounts for reseller's customers were scheduled for update to re-activate the greylisting filtering", $totalScheduledForUpdate), 'info');
 				}
 			}
 		}
+
+		$db->commit();
 	} catch (PDOException $e) {
 		$db->rollBack();
 		throw new iMSCP_Exception($e->getMessage());
