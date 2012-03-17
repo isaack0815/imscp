@@ -26,6 +26,8 @@
 
 body {background-color: black}
 
+#message {text-align:center}
+#message.success {color:green}
 #message.error {color:red}
 .info {color:yellow}
 

@@ -15,15 +15,13 @@
 	<div data-role="page" data-theme="a" data-content-theme="a">
 		<div data-role="header">
 			<h1>{productLongName}</h1>
-		</div>
-		<div data-role="content">
-			<img src="{THEME_COLOR_PATH}/images/imscp_logo.png"/>
 			<!-- BDP: page_message -->
 			<div id="message" class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-			<div class="body">
-				{LAYOUT_CONTENT}
-			</div>
+		</div>
+		<div data-role="content">
+			<img src="{THEME_COLOR_PATH}/images/imscp_logo.png"/>
+			{LAYOUT_CONTENT}
 		</div>
 		<div data-role="footer">
 			<a href="{productLink}" target="blank">{productCopyright}</a>

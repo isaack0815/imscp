@@ -25,11 +25,11 @@
 			<a data-icon="arrow-l" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
 			<!-- EDP: logged_from -->
 			<a data-icon="delete" data-transition="flip" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-		</div>
-		<div data-role="content">
 			<!-- BDP: page_message -->
 			<div id="message" class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
+		</div>
+		<div data-role="content">
 			{LAYOUT_CONTENT}
 		</div>
 		<div data-role="footer" data-position="fixed">
