@@ -21,7 +21,7 @@
  * @package		iMSCP_Core
  * @subpackage	Admin
  * @copyright	2010-2012 by i-MSCP team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @author		Raisen <kontakt@raisen.pl>
  * @version     0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
@@ -53,7 +53,7 @@
 			</pages>
 		</general_information>
 
-		<manage_users>
+		<!--<manage_users>
 			<label>Manage Users</label>
 			<uri>/admin/manage_users.php</uri>
 			<class>manage_users</class>
@@ -126,7 +126,7 @@
 					<title_class>users2</title_class>
 				</sessions_management>
 			</pages>
-		</manage_users>
+		</manage_users>-->
 
 		<hosting_plans>
 			<label>Hosting plans</label>
@@ -158,41 +158,9 @@
 			<label>System tools</label>
 			<uri>/admin/system_info.php</uri>
 			<class>webtools</class>
-			<pages>
-				<overview>
-					<label>System information</label>
-					<uri>/admin/system_info.php</uri>
-					<title_class>tools</title_class>
-				</overview>
-				<maintenance_mode>
-					<label>Maintenance mode</label>
-					<uri>/admin/settings_maintenance_mode.php</uri>
-					<title_class>maintenancemode</title_class>
-				</maintenance_mode>
-				<updates>
-					<label>Updates</label>
-					<uri>/admin/imscp_updates.php</uri>
-					<title_class>update</title_class>
-				</updates>
-				<database_updates>
-					<label>Database updates</label>
-					<uri>/admin/database_update.php</uri>
-					<title_class>update</title_class>
-				</database_updates>
-				<debugger>
-					<label>Debugger</label>
-					<uri>/admin/imscp_debugger.php</uri>
-					<title_class>debugger</title_class>
-				</debugger>
-				<rootkits_log>
-					<label>Rootkit logs</label>
-					<uri>/admin/rootkit_log.php</uri>
-					<title_class>general</title_class>
-				</rootkits_log>
-			</pages>
 		</system_tools>
 
-		<statistics>
+		<!--<statistics>
 			<label>Statistics</label>
 			<uri>/admin/server_statistic.php</uri>
 			<class>statistics</class>
@@ -360,6 +328,6 @@
 					<title_class>layout</title_class>
 				</layout>
 			</pages>
-		</profile>
+		</profile>-->
 	</navigation>
 </config>

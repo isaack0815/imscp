@@ -35,7 +35,8 @@
 			{LAYOUT_CONTENT}
 		</div>
 		<div id="footer" data-role="footer" data-position="fixed">
-			<div data-role="navbar">
+			<div data-role="collapsible">
+				<h3>{TR_SECTION_TITLE}</h3>
 				<!-- INCLUDE "../partials/navigation/left_menu.tpl" -->
 			</div>
 		</div>
