@@ -14,7 +14,6 @@
 <body>
 	<div data-role="page" data-theme="a" data-content-theme="a">
 		<div id="header" data-role="header">
-			<h1>{productLongName}</h1>
 			<!-- BDP: page_message -->
 			<div id="message" class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->

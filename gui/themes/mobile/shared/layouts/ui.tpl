@@ -19,15 +19,17 @@
 <body>
 	<div data-role="page" data-theme="a" data-content-theme="a">
 		<div id="header" data-role="header" data-position="fixed">
-			<a data-icon="home" data-rel="dialog" data-transition="flip" href="menu.php">Menu</a>
 			<h1>{TR_SECTION_TITLE}</h1>
-			<!-- BDP: logged_from -->
-			<a data-icon="arrow-l" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
-			<!-- EDP: logged_from -->
-			<a data-icon="delete" data-transition="flip" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-			<!-- BDP: page_message -->
-			<div id="message" class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
+			<a data-icon="home" data-rel="dialog" data-transition="flip" href="menu.php" data-prefetch>Menu</a>
+			<a data-icon="delete" data-transition="slide" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+			<div class="ui-bar">
+				<!-- BDP: logged_from -->
+				<a data-icon="arrow-l" data-transition="slide" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
+				<!-- EDP: logged_from -->
+				<!-- BDP: page_message -->
+				<div id="message" class="{MESSAGE_CLS}">{MESSAGE}</div>
+				<!-- EDP: page_message -->
+			</div>
 		</div>
 		<div id="content" data-role="content">
 			{LAYOUT_CONTENT}

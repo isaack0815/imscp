@@ -1,24 +1,3 @@
-<form data-transition="pop" name="admin_lod" method="post" action="admin_log.php">
-<ul data-role="listview" data-dividertheme="a" data-theme="b">
-	<li data-role="list-divider">{TR_CLEAR_LOG_MESSAGE}</li>
-	<li><div class="ui-grid-a">
-		<div class="ui-block-a">
-			<select name="uaction_clear" data-theme="a">
-				<option value="0" selected="selected">{TR_CLEAR_LOG_EVERYTHING}</option>
-				<option value="2">{TR_CLEAR_LOG_LAST2}</option>
-				<option value="4">{TR_CLEAR_LOG_LAST4}</option>
-				<option value="12">{TR_CLEAR_LOG_LAST12}</option>
-				<option value="26">{TR_CLEAR_LOG_LAST26}</option>
-				<option value="52">{TR_CLEAR_LOG_LAST52}</option>
-			</select>
-		</div>
-		<div class="ui-block-b">
-			<input data-theme="a" name="submit" type="submit" value="{TR_CLEAR_LOG}"/>
-		</div>
-		<input type="hidden" name="uaction" value="clear_log"/>
-	</div></li>
-</ul>
-</form>
 <ul data-role="listview" data-dividertheme="a" data-theme="b">
 	<li data-role="list-divider"><div class="ui-grid-a">
 		<div class="ui-block-a">{TR_DATE}</div>
@@ -45,3 +24,20 @@
 		<!-- EDP: scroll_next -->
 	</div></li>
 </ul>
+<form data-transition="slideup" name="admin_lod" method="post" action="admin_log.php">
+	<ul data-role="listview" data-dividertheme="a" data-theme="b">
+		<li data-role="list-divider">{TR_CLEAR_LOG_MESSAGE}</li>
+		<li>
+			<select name="uaction_clear" data-theme="a">
+				<option value="0" selected="selected">{TR_CLEAR_LOG_EVERYTHING}</option>
+				<option value="2">{TR_CLEAR_LOG_LAST2}</option>
+				<option value="4">{TR_CLEAR_LOG_LAST4}</option>
+				<option value="12">{TR_CLEAR_LOG_LAST12}</option>
+				<option value="26">{TR_CLEAR_LOG_LAST26}</option>
+				<option value="52">{TR_CLEAR_LOG_LAST52}</option>
+			</select>
+			<input data-theme="a" name="submit" type="submit" value="{TR_CLEAR_LOG}"/>
+			<input type="hidden" name="uaction" value="clear_log"/>
+		</li>
+	</ul>
+</form>
