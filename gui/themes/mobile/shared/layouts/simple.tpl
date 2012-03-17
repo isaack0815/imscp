@@ -6,10 +6,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+	<link rel="stylesheet" href="{THEME_COLOR_PATH}/css/jquery.mobile-1.1.0-rc.1.min.css" />
 	<link rel="stylesheet" href="{THEME_COLOR_PATH}/css/imscp.css" />
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+	<script src="{THEME_COLOR_PATH}/js/jquery-1.7.1.min.js"></script>
+	<script src="{THEME_COLOR_PATH}/js/jquery.mobile-1.1.0-rc.1.min.js"></script>
 </head>
 <body>
 	<div data-role="page" data-theme="a" data-content-theme="a">

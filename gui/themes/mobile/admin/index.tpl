@@ -1,54 +1,15 @@
-<table>
-	<tr>
-		<th>{TR_PROPERTIES}</th>
-		<th>{TR_VALUES}</th>
-	</tr>
-	<tr>
-		<td>{TR_ADMIN_USERS}</td>
-		<td>{ADMIN_USERS}</td>
-	</tr>
-	<tr>
-		<td>{TR_RESELLER_USERS}</td>
-		<td>{RESELLER_USERS}</td>
-	</tr>
-	<tr>
-		<td>{TR_NORMAL_USERS}</td>
-		<td>{NORMAL_USERS}</td>
-	</tr>
-	<tr>
-		<td>{TR_DOMAINS}</td>
-		<td>{DOMAINS}</td>
-	</tr>
-	<tr>
-		<td>{TR_SUBDOMAINS}</td>
-		<td>{SUBDOMAINS}</td>
-	</tr>
-	<tr>
-		<td>{TR_DOMAINS_ALIASES}</td>
-		<td>{DOMAINS_ALIASES}</td>
-	</tr>
-	<tr>
-		<td>{TR_MAIL_ACCOUNTS}</td>
-		<td>{MAIL_ACCOUNTS}</td>
-	</tr>
-	<tr>
-		<td>{TR_FTP_ACCOUNTS}</td>
-		<td>{FTP_ACCOUNTS}</td>
-	</tr>
-	<tr>
-		<td>{TR_SQL_DATABASES}</td>
-		<td>{SQL_DATABASES}</td>
-	</tr>
-	<tr>
-		<td>{TR_SQL_USERS}</td>
-		<td>{SQL_USERS}</td>
-	</tr>
-</table>
-
-<h2 class="traffic"><span>{TR_SERVER_TRAFFIC}</span></h2>
-
-<p>{TRAFFIC_WARNING}</p>
-
-<div class="graph">
-	<span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span>
-			</div>
+<ul data-role="listview" data-dividertheme="a" data-theme="b">
+	<li data-role="list-divider">{TR_PROPERTIES}</li>
+	<li>{TR_ADMIN_USERS}<span class="ui-li-count">{ADMIN_USERS}</span></li>
+	<li>{TR_RESELLER_USERS}<span class="ui-li-count">{RESELLER_USERS}</span></li>
+	<li>{TR_NORMAL_USERS}<span class="ui-li-count">{NORMAL_USERS}</span></li>
+	<li>{TR_DOMAINS}<span class="ui-li-count">{DOMAINS}</span></li>
+	<li>{TR_SUBDOMAINS}<span class="ui-li-count">{SUBDOMAINS}</span></li>
+	<li>{TR_DOMAINS_ALIASES}<span class="ui-li-count">{DOMAINS_ALIASES}</span></li>
+	<li>{TR_MAIL_ACCOUNTS}<span class="ui-li-count">{MAIL_ACCOUNTS}</span></li>
+	<li>{TR_FTP_ACCOUNTS}<span class="ui-li-count">{FTP_ACCOUNTS}</span></li>
+	<li>{TR_SQL_DATABASES}<span class="ui-li-count">{SQL_DATABASES}</span></li>
+	<li>{TR_SQL_USERS}<span class="ui-li-count">{SQL_USERS}</span></li>
+	<li data-role="list-divider">{TR_SERVER_TRAFFIC}</li>
+	<li>{TRAFFIC_WARNING}</li>
+</ul>
