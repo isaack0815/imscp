@@ -23,5 +23,11 @@
  * @author      Paweł Iwanowski <kontakt@paweliwanowski.pl>
  * @author		i-MSCP Team
  */
+
+body {background-color: black}
+
 #message.error {color:red}
 .info {color:yellow}
+
+.ui-li-count.down {color:red}
+.ui-li-count.up {color:green}
