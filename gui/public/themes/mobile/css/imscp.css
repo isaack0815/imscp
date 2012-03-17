@@ -20,16 +20,19 @@
  * @subpackage  Layout
  * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
- * @author      Paweł Iwanowski <kontakt@paweliwanowski.pl>
+ * @author      Raisen <kontakt@raisen.pl>
  * @author		i-MSCP Team
  */
 
 body {background-color: black}
 
-#message {text-align:center}
-#message.success {color:green}
-#message.error {color:red}
-.info {color:yellow}
+#header {text-align: center}
+#footer {text-align: center}
 
-.ui-li-count.down {color:red}
-.ui-li-count.up {color:green}
+#message {text-align: center}
+#message.success {color: green}
+#message.error {color: red}
+.info {color: yellow}
+
+.ui-li-count.down {color: red}
+.ui-li-count.up {color: green}

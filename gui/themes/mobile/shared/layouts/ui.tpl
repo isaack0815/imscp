@@ -18,8 +18,8 @@
 </head>
 <body>
 	<div data-role="page" data-theme="a" data-content-theme="a">
-		<div data-role="header" data-position="fixed">
-			<a data-icon="home" data-rel="dialog" data-transition="flip" href="menu.html">Menu</a>
+		<div id="header" data-role="header" data-position="fixed">
+			<a data-icon="home" data-rel="dialog" data-transition="flip" href="menu.php">Menu</a>
 			<h1>{TR_SECTION_TITLE}</h1>
 			<!-- BDP: logged_from -->
 			<a data-icon="arrow-l" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
@@ -29,10 +29,10 @@
 			<div id="message" class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 		</div>
-		<div data-role="content">
+		<div id="content" data-role="content">
 			{LAYOUT_CONTENT}
 		</div>
-		<div data-role="footer" data-position="fixed">
+		<div id="footer" data-role="footer" data-position="fixed">
 			<div data-role="navbar">
 				<!-- INCLUDE "../partials/navigation/left_menu.tpl" -->
 			</div>
