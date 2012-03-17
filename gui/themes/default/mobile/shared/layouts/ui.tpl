@@ -15,13 +15,14 @@
 	<link rel="stylesheet" href="{THEME_COLOR_PATH}/css/imscp.css" />
 	<script src="{THEME_COLOR_PATH}/js/jquery-1.7.1.min.js"></script>
 	<script src="{THEME_COLOR_PATH}/js/jquery.mobile-1.1.0-rc.1.min.js"></script>
+	<script src="{THEME_COLOR_PATH}/js/imscp.js"></script>
 </head>
 <body>
 	<div data-role="page" data-theme="a" data-content-theme="a">
 		<div id="header" data-role="header" data-position="fixed">
 			<h1>{TR_SECTION_TITLE}</h1>
 			<a data-icon="home" data-rel="dialog" data-transition="flip" href="menu.php" data-prefetch>Menu</a>
-			<a data-icon="delete" data-transition="slide" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+			<a data-icon="delete" rel="external" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
 			<div class="ui-bar">
 				<!-- BDP: logged_from -->
 				<a data-icon="arrow-l" data-transition="slide" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>

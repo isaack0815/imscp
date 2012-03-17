@@ -53,7 +53,7 @@
 			</pages>
 		</general_information>
 
-		<!--<manage_users>
+		<manage_users>
 			<label>Manage Users</label>
 			<uri>/admin/manage_users.php</uri>
 			<class>manage_users</class>
@@ -62,40 +62,8 @@
 					<label>Users</label>
 					<uri>/admin/manage_users.php</uri>
 					<title_class>users</title_class>
-					<pages>
-						<reseller_edit_link>
-							<label>Edit reseller</label>
-							<uri>/admin/reseller_edit.php</uri>
-							<title_class>user_green</title_class>
-							<visible>0</visible>
-						</reseller_edit_link>
-						<domain_detail_link>
-							<label>Domain detail</label>
-							<uri>/admin/domain_details.php</uri>
-							<title_class>general</title_class>
-							<visible>0</visible>
-						</domain_detail_link>
-						<customer_edit_link>
-							<label>Edit customer</label>
-							<uri>/admin/admin_edit.php</uri>
-							<title_class>user_blue</title_class>
-							<visible>0</visible>
-						</customer_edit_link>
-						<customer_delete_link>
-							<label>Delete customer</label>
-							<uri>/admin/user_delete.php</uri>
-							<title_class>user_blue</title_class>
-							<visible>0</visible>
-						</customer_delete_link>
-						<domain_edit_link>
-							<label>Edit domain</label>
-							<uri>/admin/domain_edit.php</uri>
-							<title_class>domains</title_class>
-							<visible>0</visible>
-						</domain_edit_link>
-					</pages>
 				</overview>
-				<add_admin>
+				<!--<add_admin>
 					<label>Add admin</label>
 					<uri>/admin/admin_add.php</uri>
 					<title_class>user_yellow</title_class>
@@ -114,7 +82,7 @@
 					<label>Customers assignment</label>
 					<uri>/admin/manage_reseller_users.php</uri>
 					<title_class>users2</title_class>
-				</customers_assignment>
+				</customers_assignment>-->
 				<circular>
 					<label>Circular</label>
 					<uri>/admin/circular.php</uri>
@@ -126,7 +94,7 @@
 					<title_class>users2</title_class>
 				</sessions_management>
 			</pages>
-		</manage_users>-->
+		</manage_users>
 
 		<hosting_plans>
 			<label>Hosting plans</label>

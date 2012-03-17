@@ -1,5 +1,5 @@
 		<div id="loginBox">
-			<form data-transition="slide" name="loginFrm" action="index.php" method="post">
+			<form data-ajax="false" name="loginFrm" action="index.php" method="post">
 				<label for="uname">{TR_USERNAME}</label>
 				<input type="text" name="uname" id="uname" tabindex="1"/>
 				<label for="upass">{TR_PASSWORD}</label>

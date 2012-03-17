@@ -590,6 +590,12 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeLayout()
 	{
+		// /var/www/imscp/gui/themes/default
+		if (layout_isMobileBrowser()) { // just for tes
+			$this->_config->ROOT_TEMPLATE_PATH = $this->_config->ROOT_TEMPLATE_PATH . '/mobile';
+			$this->_config->USER_INITIAL_THEME .= '/mobile';
+		}
+
 		// Set template root directory
 		iMSCP_pTemplate::setRootDir($this->_config->ROOT_TEMPLATE_PATH);
 
