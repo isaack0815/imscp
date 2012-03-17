@@ -641,7 +641,11 @@ function layout_setMainMenuLabelsVisibilityEvt($event)
     }
 }
 
-// I'm ok to put that here
+/**
+ * Checks if user use mobile browser (smartphone, tablet)
+ *
+ * @return bool
+ */
 function layout_isMobileBrowser()
 {
 	$useragent=$_SERVER['HTTP_USER_AGENT'];
