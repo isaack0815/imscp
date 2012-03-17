@@ -30,8 +30,7 @@
  * Hello World Plugin.
  *
  * This plugin is only intended to be used in documentation to explain how to create a plugin for i-MSCP. This plugin
- * simply say 'Hello World' when the login page iand prevent execution of any other plugin that listen on the
- * onLoginScriptStart and the onLoginScriptEnd events.
+ * simply say 'Hello World' when the login page is loaded.
  *
  * @category	iMSCP
  * @package		iMSCP_Plugin
