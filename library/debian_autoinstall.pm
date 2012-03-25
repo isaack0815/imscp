@@ -70,7 +70,7 @@ sub preBuild {
 	my $self = shift;
 	my $rs;
 
-	$rs = $self->updateSystemPackagesIndex();
+	#$rs = $self->updateSystemPackagesIndex();
 	return $rs if $rs;
 
 	$rs = $self->preRequish();
@@ -81,7 +81,15 @@ sub preBuild {
 	$rs = $self->UpdateAptSourceList();
 	return $rs if $rs;
 
-	$rs = $self->readPackagesList();
+	do{
+
+		$rs = $self->readPackagesList();
+
+	} while ($rs == -1);
+
+	return $rs if $rs;
+
+	$rs = $self->removeNotNeeded();
 	return $rs if $rs;
 
 	$rs = $self->installPackagesList();
@@ -242,54 +250,76 @@ sub readPackagesList {
 
 	fatal('Unable to load perl module XML::Simple...') if($@);
 
-	my $xml = XML::Simple->new(NoEscape => 1);
+	my $xml = XML::Simple->new(NoEscape => 1, SuppressEmpty => 1);
 	my $data = eval { $xml->XMLin($confile, KeyAttr => 'name') };
 
-	foreach(keys %{$data}){
-		if(ref($data->{$_}) eq 'ARRAY'){
-			$self->_parseArray($data->{$_});
+	my %alternatives;
+	$self->{install} = '';
+	$self->{require_server} = '';
+	$self->{remove} = '';
+
+	foreach (keys %$data) {
+		if (exists $data->{$_}->{section}){
+			push(@{$alternatives{$data->{$_}->{section}}}, $_);
 		} else {
-			if($data->{$_}->{alternative}){
-				my $server  = $_;
-				my @alternative = keys %{$data->{$server}->{alternative}};
+			$self->{install} .= ' '.$data->{$_}->{install} if(exists $data->{$_}->{install});
+			$self->{require_server} .= ' '.$data->{$_}->{require_server} if(exists $data->{$_}->{require_server});
+		}
+	}
 
-				for (my $index = $#alternative; $index >= 0; --$index ){
-					my $defServer = $alternative[$index];
-					my $oldServer = $main::imscpConfigOld{uc($server) . '_SERVER'};
+	foreach(keys %alternatives){
+		my $rs;
 
-					if($@){
-						error("$@");
-						return 1;
-					}
+		for (my $index = $#{$alternatives{$_}}; $index >= 0; --$index ){
+			my $defServer = @{$alternatives{$_}}[$index];
+			my $oldServer = $main::imscpConfigOld{uc($_) . '_SERVER'};
 
-					if($oldServer && $defServer eq $oldServer){
-						splice @alternative, $index, 1 ;
-						unshift(@alternative, $defServer);
-						last;
-					}
-				}
-
-				my $rs;
-
-				do{
-					$rs = iMSCP::Dialog->factory()->radiolist(
-						"Choose server $server",
-						@alternative,
-						#uncoment after dependicies check is implemented
-						#'Not Used'
-					);
-				} while (!$rs);
-
-				$self->{userSelection}->{$server} = lc($rs) eq 'not used' ? 'no' : $rs;
-
-				foreach(@alternative){
-					delete($data->{$server}->{alternative}->{$_}) if($_ ne $rs);
-				}
+			if($@){
+				error("$@");
+				return 1;
 			}
 
-			$self->_parseHash($data->{$_});
+			if($oldServer && $defServer eq $oldServer){
+				splice @{$alternatives{$_}}, $index, 1 ;
+				unshift @{$alternatives{$_}}, $defServer;
+				last;
+			}
 		}
-	};
+
+		do{
+			$rs = iMSCP::Dialog->factory()->radiolist(
+					"Choose server $_",
+					@{$alternatives{$_}},
+					'Not Used'
+				);
+		} while (!$rs);
+
+		if(lc($rs) ne 'not used'){
+			$self->{install} .= ' '.$data->{$rs}->{install} if(exists $data->{$rs}->{install});
+			$self->{require_server} .= ' '.$data->{$rs}->{require_server} if(exists $data->{$rs}->{require_server});
+		}
+
+		$self->{userSelection}->{$_} = lc($rs) eq 'not used' ? 'no' : $rs;
+	}
+
+	$self->{install} = _clean($self->{install});
+	$self->{require_server} = _clean($self->{require_server});
+
+	foreach(keys $self->{userSelection}){
+		next unless $data->{$self->{userSelection}->{$_}}->{remove};;
+		foreach(split(' ',$data->{$self->{userSelection}->{$_}}->{remove})){
+			$self->{remove} .= ' '.$data->{$_}->{install} if(exists $data->{$_}->{install});
+		}
+	}
+	$self->{remove} = _clean($self->{remove});
+
+	foreach(split(" ", $self->{require_server})){
+		next unless $_;
+		unless( exists $self->{userSelection}->{$_} && $self->{userSelection}->{$_} ne 'no') {
+			iMSCP::Dialog->factory()->msgbox("Following selection is not valid, require $_ server but was not selected");
+			return -1;
+		}
+	}
 
 	debug('Ending...');
 	0;
@@ -308,9 +338,33 @@ sub installPackagesList {
 
 	my($rs, $stderr);
 
-	$rs = execute("apt-get -y install $self->{toInstall}", undef, \$stderr);
+	$rs = execute("apt-get -f -y install $self->{install}", undef, \$stderr);
 	error("$stderr") if $stderr && $rs;
 	error('Can not install packages.') if $rs && ! $stderr;
+	return $rs if $rs;
+
+	debug('Ending...');
+	0;
+}
+
+# Remove Debian packages that might conflict with those required by i-MSCP.
+#
+# @param self $self iMSCP::debian_autoinstall instance
+# @return in 0 on success, other on failure
+sub removeNotNeeded {
+	debug('Starting...');
+
+	my $self = shift;
+
+	return 0 unless $self->{remove};
+
+	iMSCP::Dialog->factory()->infobox('Removing needed packages');
+
+	my($rs, $stderr);
+
+	$rs = execute("dpkg -r --force-depends $self->{remove}", undef, \$stderr);
+	error("$stderr") if $stderr && $rs;
+	error('Can not remove packages.') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	debug('Ending...');
@@ -349,6 +403,19 @@ sub _trim {
 	$var;
 }
 
+# Clean a string.
+#
+# @access private
+# @param string $var String to be trimmed
+# @return string
+sub _clean {
+	my $var = shift;
+	$var =~ s/\n+//mg;
+	$var =~ s/\t+/ /mg;
+	$var =~ s/\s+/ /mg;
+	$var;
+}
+
 # Parse hash.
 #
 # @access private
@@ -358,6 +425,7 @@ sub _trim {
 sub _parseHash {
 	my $self = shift;
 	my $hash = shift;
+	my $rv = '';
 
 	foreach(values %{$hash}) {
 		if(ref($_) eq 'HASH') {
@@ -365,9 +433,10 @@ sub _parseHash {
 		} elsif(ref($_) eq 'ARRAY') {
 			$self->_parseArray($_);
 		} else {
-			$self->{toInstall} .= " " . _trim($_);
+			$rv .= " " . _trim($_);
 		}
 	}
+	$rv;
 }
 
 # Parse array
@@ -379,6 +448,7 @@ sub _parseHash {
 sub _parseArray {
 	my $self = shift;
 	my $array = shift;
+	my $rv = '';
 
 	foreach(@{$array}){
 		if(ref($_) eq 'HASH') {
@@ -386,9 +456,10 @@ sub _parseArray {
 		}elsif(ref($_) eq 'ARRAY') {
 			$self->_parseArray($_);
 		} else {
-			$self->{toInstall} .= " " . _trim($_);
+			$rv .= " " . _trim($_);
 		}
 	}
+	$rv;
 }
 
 1;
