@@ -24,7 +24,7 @@
 	</courier>
 	<dovecot section="po">
 		<install>
-			dovecot-imapd dovecot-pop3d dovecot-sieve dovecot-mysql dovecot-core libfam0
+			dovecot-core dovecot-imapd dovecot-pop3d dovecot-sieve dovecot-mysql libfam0
 		</install>
 		<require_server>mta</require_server>
 		<remove>courier</remove>
