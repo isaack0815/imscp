@@ -305,7 +305,7 @@ sub readPackagesList {
 	$self->{install} = _clean($self->{install});
 	$self->{require_server} = _clean($self->{require_server});
 
-	foreach(keys $self->{userSelection}){
+	foreach(keys %{$self->{userSelection}}){
 		next unless $data->{$self->{userSelection}->{$_}}->{remove};;
 		foreach(split(' ',$data->{$self->{userSelection}->{$_}}->{remove})){
 			$self->{remove} .= ' '.$data->{$_}->{install} if(exists $data->{$_}->{install});
