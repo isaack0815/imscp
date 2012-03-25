@@ -17,7 +17,7 @@
 	</apache_itk>
 	<courier section="po">
 		<install>
-			courier-imap courier-imap-ssl courier-maildrop courier-pop courier-pop-ssl libgamin0 gamin
+			courier-imap courier-ssl courier-imap-ssl courier-maildrop courier-pop courier-pop-ssl libgamin0 gamin
 		</install>
 		<require_server>mta</require_server>
 		<remove>dovecot</remove>
