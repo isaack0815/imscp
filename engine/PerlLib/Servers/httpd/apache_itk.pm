@@ -729,7 +729,6 @@ sub addCfg{
 	for(
 		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}.conf",
 		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}_ssl.conf",
-		"$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf",
 		"$self->{wrkDir}/$data->{DMN_NAME}.conf",
 		"$self->{wrkDir}/$data->{DMN_NAME}_ssl.conf"
 	){
@@ -744,7 +743,7 @@ sub addCfg{
 	if($data->{have_cert}){
 		$configs{"$data->{DMN_NAME}_ssl.conf"}	=	{
 													redirect => 'domain_redirect_ssl.tpl',
-													normal => 'domain-ssl.tpl'
+													normal => 'domain_ssl.tpl'
 												} ;
 		$self->{data}->{CERT} = $certFile;
 	}
