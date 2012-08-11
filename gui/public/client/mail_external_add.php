@@ -111,8 +111,8 @@ function validate_NAME($domain, &$err){
 	} else {
 		$entry = $domain['name'];
 	}
-
-	if(!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false))) {
+	
+	if(!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false, 'allow' => Zend_Validate_Hostname::ALLOW_ALL))) {
 		$err .= tr('Invalid NAME');
 		return false;
 	}
@@ -139,13 +139,12 @@ function validate_MX($dns_record, $mx_srv_prio, &$err, &$text) {
 		$dns_record .= '.';
 	}
 
-
 	if (!preg_match('~^([\d]+)$~', $mx_srv_prio)) {
 		$err .= tr('Priority must be a number!');
 		return false;
 	}
-
-	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
+	
+	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false, 'allow' => Zend_Validate_Hostname::ALLOW_ALL))) {
 			$err .= tr('Usage of disallowed character in MX');
 			return false;
 	}
@@ -280,6 +279,7 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 			for($i=0;$i<count($_POST['relay_type']);$i++) {
 				if(!in_array($i, $del_items)) {
 					$mx_alias = (isset($_POST['mx_alias'][$i]) && $_POST['mx_alias'][$i] === 'empty') ? '' : '*';
+					$cname_name = (isset($_POST['cname_name'][$i])) ? $_POST['cname_name'][$i] : '';
 					$_dns = ($_POST['relay_type'][$i] === 'CNAME') ? $cname_name : $mx_alias;
 					$srv_dnsrecord = encode_idna($_POST['srv_dnsrecord'][$i]);
 					if (filter_var($srv_dnsrecord, FILTER_VALIDATE_IP) === false && substr($srv_dnsrecord, -1) != '.') {
