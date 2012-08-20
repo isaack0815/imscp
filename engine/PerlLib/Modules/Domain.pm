@@ -314,7 +314,6 @@ sub buildHTTPDData{
 		MEMORY_LIMIT				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{memory_limit} : $rdata->{PHPINI_MEMORY_LIMIT}->{value}),
 		ERROR_REPORTING				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{error_reporting} : $rdata->{PHPINI_ERROR_REPORTING}->{value}),
 		DISPLAY_ERRORS				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{display_errors} : $rdata->{PHPINI_DISPLAY_ERRORS}->{value}),
-		REGISTER_GLOBALS			=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{register_globals} : $rdata->{PHPINI_REGISTER_GLOBALS}->{value}),
 		POST_MAX_SIZE				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{post_max_size} : $rdata->{PHPINI_POST_MAX_SIZE}->{value}),
 		UPLOAD_MAX_FILESIZE			=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{upload_max_filesize} : $rdata->{PHPINI_UPLOAD_MAX_FILESIZE}->{value}),
 		ALLOW_URL_FOPEN				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{allow_url_fopen} : $rdata->{PHPINI_ALLOW_URL_FOPEN}->{value}),
@@ -399,6 +398,28 @@ sub buildNAMEDData{
 									($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0)
 									&& ($self->{external_mail} ne 'on')
 									? '' : ';');
+
+	0;
+}
+
+sub buildFTPDData{
+
+	my $self	= shift;
+	my $rs 		= 0;
+	my ($stdout, $stderr);
+	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{domain_name}";
+	my $file_name	= "$self->{domain_name}";
+	$file_name		=~ s~/+~\.~g;
+	$file_name		=~ s~\.$~~g;
+	$hDir			=~ s~/+~/~g;
+	$hDir			=~ s~/$~~g;
+
+
+	$self->{ftpd} = {
+		FILE_NAME	=> $file_name,
+		PATH		=> $hDir,
+		ROOT_DOMAIN	=> 'true'
+	};
 
 	0;
 }
